@@ -94,8 +94,8 @@ export default class Sidebar extends React.PureComponent {
         visible={sidebarVisible}
         vertical
       >
-        <Menu.Item header href="//www.mapequation.org/alluvial">
-          <MenuHeader/>
+        <Menu.Item header href="">
+          Go Back
         </Menu.Item>
         <Menu.Item
           icon='close'

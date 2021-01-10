@@ -229,7 +229,7 @@ export default class LoadNetworks extends React.Component {
   loadExample = () => {
     const { onSubmit } = this.props;
 
-    const filename = "science-1998-2001-2007.json";
+    const filename = "alluvial.json";
 
     fetch(`./data/${filename}`)
       .then(res => res.json())
@@ -285,141 +285,11 @@ export default class LoadNetworks extends React.Component {
             <Step link onClick={this.withLoadingState(this.loadExample)}>
               <Icon name="book"/>
               <Step.Content>
-                <Step.Title>Load example</Step.Title>
-                <Step.Description>Citation networks</Step.Description>
+                <Step.Title>Load Alluvial Network</Step.Title>
+                <Step.Description>March to August</Step.Description>
               </Step.Content>
             </Step>
           </Step.Group>
-
-          <Divider horizontal style={{ margin: "20px 0px 30px 0px" }} content="Or"/>
-
-          <Step.Group ordered>
-            <Step
-              as="label"
-              link
-              completed={files.length > 0}
-              active={files.length === 0}
-              htmlFor="upload"
-            >
-              <Step.Content>
-                <Step.Title>Add networks</Step.Title>
-                <Step.Description>clu, map, tree, ftree, json</Step.Description>
-              </Step.Content>
-              <input
-                style={{ display: "none" }}
-                type="file"
-                multiple
-                id="upload"
-                onChange={this.withLoadingState(this.loadSelectedFiles)}
-                accept={acceptedFormats + ",.json"}
-                ref={input => (this.input = input)}
-              />
-            </Step>
-            <Step
-              link
-              active={files.length > 0}
-              disabled={files.length === 0}
-              onClick={this.withLoadingState(this.createDiagram)}
-            >
-              <Step.Content>
-                <Step.Title>Create diagram</Step.Title>
-              </Step.Content>
-            </Step>
-          </Step.Group>
-
-          <Transition
-            animation="glow"
-            duration={5000}
-            visible={animateUseNodeIds}
-          >
-            <Form>
-              <Form.Field>
-                Node identifier
-                <Popup trigger={<Icon name="question"/>} inverted>
-                  <p>
-                    Two nodes in different networks are considered equal if their names are the same.
-                    For this to work, all nodes in a network must have unique names.
-                  </p>
-                  <p>
-                    If a network does not have unique names, you can try to use node ids as identifiers,
-                    which uses the node ids to determine if two nodes are equal.
-                  </p>
-                </Popup>
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  radio
-                  label="Node name"
-                  name="nodeIdentifier"
-                  value="name"
-                  checked={nodeIdentifier === "name"}
-                  onChange={this.onNodeIdentifierChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  radio
-                  label="Node id"
-                  name="nodeIdentifier"
-                  value="id"
-                  checked={nodeIdentifier === "id"}
-                  onChange={this.onNodeIdentifierChange}
-                />
-              </Form.Field>
-            </Form>
-          </Transition>
-
-          {files.length > 0 &&
-          <Table celled unstackable striped size="small">
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Size</Table.HeaderCell>
-                <Table.HeaderCell>Format</Table.HeaderCell>
-                <Table.HeaderCell>Multilayer</Table.HeaderCell>
-                <Table.HeaderCell/>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              {files.map((file, i) =>
-                <Transition key={i} animation="shake" duration={700} visible={!file.error}>
-                  <DraggableTableRow
-                    draggable
-                    className="draggable"
-                    index={i}
-                    action={this.moveRow}
-                  >
-                    <Table.Cell style={{ cursor: "grab" }} error={file.error}>
-                      {file.name}
-                      {file.error &&
-                      <Popup
-                        inverted
-                        content={file.errorMessage}
-                        trigger={
-                          <Icon name="warning sign" style={{ float: "right", cursor: "pointer" }}/>
-                        }/>
-                      }
-                    </Table.Cell>
-                    <Table.Cell>{humanFileSize(file.size)}</Table.Cell>
-                    <Table.Cell>{file.format}</Table.Cell>
-                    <Table.Cell>
-                      <Checkbox checked={file.multilayer} onChange={() => this.toggleMultilayer(i)}/>
-                    </Table.Cell>
-                    <Table.Cell
-                      selectable
-                      textAlign="center"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => this.removeFile(i)}
-                    >
-                      <Icon name="x"/>
-                    </Table.Cell>
-                  </DraggableTableRow>
-                </Transition>
-              )}
-            </Table.Body>
-          </Table>
-          }
         </Segment>
       </div>
     );
