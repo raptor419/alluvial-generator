@@ -280,7 +280,6 @@ export default class LoadNetworks extends React.Component {
           textAlign="center"
           style={{ padding: "50px 50px" }}
         >
-          <Label attached="top right">v {process.env.REACT_APP_VERSION}</Label>
           <Step.Group>
             <Step link onClick={this.withLoadingState(this.loadExample)}>
               <Icon name="book"/>
