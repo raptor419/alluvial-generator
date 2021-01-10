@@ -1,4 +1,4 @@
-# [Alluvial Diagram for CovidNLP Dashboarg](http://covidnlp.tavlab.iiitd.edu.in/)
+# [Alluvial Diagram for CovidNLP Dashboard](http://covidnlp.tavlab.iiitd.edu.in/)
 
 ## Feedback
 If you have any questions, feedback, or issues, please add them to the [issues page](https://github.com/raptor419/alluvial-generator/issues).
