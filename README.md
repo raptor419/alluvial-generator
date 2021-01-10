@@ -1,9 +1,11 @@
-# [Alluvial Generator](https://alluvial.mapequation.org)
+# [Alluvial Diagram for CovidNLP Dashboard](http://covidnlp.tavlab.iiitd.edu.in/)
 
 ## Feedback
-If you have any questions, feedback, or issues, please add them to the [issues page](https://github.com/mapequation/alluvial-generator/issues).
+If you have any questions, feedback, or issues, please add them to the [issues page](https://github.com/raptor419/alluvial-generator/issues).
 
 ## Instructions
+
+Just select network and press the load network button.
 
 Networks are shown as vertical stacks of modules. To highlight change between networks, we draw
 streamines between the networks. To tell which sub-modules that have the same parent module, we draw
@@ -30,10 +32,3 @@ To regroup sub-modules into their parent module, double click on any sub-module 
 the shift key.
 
 All modules with the same parent will be re-grouped into the parent module.
-
-## Supported formats
-Currently, we support networks clustered by [Infomap](https://www.mapequation.org/code.html) into
-the `clu`, `map`, `tree` and `ftree` formats.
-To get hierarchical modules, you need to use the formats `tree` or `ftree`.
-
-Read more about Infomap output formats on the [Infomap documentation page](https://www.mapequation.org/code.html#Output).
