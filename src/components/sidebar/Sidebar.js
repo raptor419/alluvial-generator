@@ -94,7 +94,7 @@ export default class Sidebar extends React.PureComponent {
         visible={sidebarVisible}
         vertical
       >
-        <Menu.Item header href="">
+        <Menu.Item header href="./">
           Go Back
         </Menu.Item>
         <Menu.Item

@@ -8,10 +8,6 @@ const Header = () => (
       <div className="menu">
         <div>
           <h1 className="ui header">
-            <a href="http://www.mapequation.org">
-              <img className="mapequation-logo"
-                   src="//www.mapequation.org/assets/img/twocolormapicon_whiteboarder.svg" alt="mapequation-icon"/>
-            </a>
             <div className="content">
               <span className="brand">
                   <span className="brand-infomap">Alluvial</span> <span className="brand-nn">Diagram</span>
