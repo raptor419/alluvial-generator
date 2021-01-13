@@ -10,9 +10,9 @@ const Header = () => (
           <h1 className="ui header">
             <div className="content">
               <span className="brand">
-                  <span className="brand-infomap">Alluvial</span> <span className="brand-nn">Diagram</span>
+                  <span className="brand-infomap">Alluvial Diagram</span> <span className="brand-nn"></span>
               </span>
-              <div className="sub header">Interactive mapping of change in hierarchical networks</div>
+              <div className="red-font sub header">Interactive mapping of change in hierarchical networks</div>
             </div>
           </h1>
         </div>
