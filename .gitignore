@@ -100,4 +100,5 @@ modules.xml
 
 # End of https://www.gitignore.io/api/webstorm+all
 
+package.json
 sentry-release.sh

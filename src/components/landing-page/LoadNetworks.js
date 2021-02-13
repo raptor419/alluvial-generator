@@ -83,8 +83,13 @@ export default class LoadNetworks extends React.Component {
 
   loadSelectedFiles = () => {
     const validFiles = [];
+    console.log(this.input)
+    const filename = "alluvial.json";
 
+    // const fs = require('fs');
+    
     for (let file of this.input.files) {
+      console.log(file)
       const extension = fileExtension(file.name);
       if (isValidExtension(extension) || extension === "json") {
         file.format = extension;
@@ -118,6 +123,9 @@ export default class LoadNetworks extends React.Component {
         console.log(err);
         Sentry.captureException(err);
       });
+      console.log(validFiles);
+      console.log(this.state);
+      console.log(this.state.files);
   };
 
   setIdentifiersInJsonFormat = (json) => {
@@ -280,15 +288,101 @@ export default class LoadNetworks extends React.Component {
           textAlign="center"
           style={{ padding: "50px 50px" }}
         >
+          <Label attached="top right">v {process.env.REACT_APP_VERSION}</Label>
           <Step.Group>
             <Step link onClick={this.withLoadingState(this.loadExample)}>
               <Icon name="book"/>
               <Step.Content>
-                <Step.Title>Load Alluvial Network</Step.Title>
-                <Step.Description>March to August</Step.Description>
+                <Step.Title>Load our inference</Step.Title>
+                <Step.Description>Load out example inference network</Step.Description>
               </Step.Content>
             </Step>
           </Step.Group>
+
+          <Divider horizontal style={{ margin: "20px 0px 30px 0px" }} content="Or"/>
+
+          <Step.Group>
+            <Step
+              as="label"
+              link
+              completed={files.length > 0}
+              active={files.length === 0}
+              htmlFor="upload"
+            >
+              <Step.Content>
+                <Step.Title>Add Month</Step.Title>
+                <Step.Description>Add Month to Network</Step.Description>
+              </Step.Content>
+              <input
+                type="file"
+                multiple
+                id="upload"
+                onChange={this.withLoadingState(this.loadSelectedFiles)}
+                ref={input => (this.input = input)}
+              />
+            </Step>
+            <Step
+              link
+              active={files.length > 0}
+              disabled={files.length === 0}
+              onClick={this.withLoadingState(this.createDiagram)}
+            >
+              <Step.Content>
+                <Step.Title>Create diagram</Step.Title>
+              </Step.Content>
+            </Step>
+          </Step.Group>
+
+          {files.length > 0 &&
+          <Table celled unstackable striped size="small">
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Format</Table.HeaderCell>
+                <Table.HeaderCell>Multilayer</Table.HeaderCell>
+                <Table.HeaderCell/>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              {files.map((file, i) =>
+                <Transition key={i} animation="shake" duration={700} visible={!file.error}>
+                  <DraggableTableRow
+                    draggable
+                    className="draggable"
+                    index={i}
+                    action={this.moveRow}
+                  >
+                    <Table.Cell style={{ cursor: "grab" }} error={file.error}>
+                      {file.name}
+                      {file.error &&
+                      <Popup
+                        inverted
+                        content={file.errorMessage}
+                        trigger={
+                          <Icon name="warning sign" style={{ float: "right", cursor: "pointer" }}/>
+                        }/>
+                      }
+                    </Table.Cell>
+                    <Table.Cell>{humanFileSize(file.size)}</Table.Cell>
+                    <Table.Cell>{file.format}</Table.Cell>
+                    <Table.Cell>
+                      <Checkbox checked={file.multilayer} onChange={() => this.toggleMultilayer(i)}/>
+                    </Table.Cell>
+                    <Table.Cell
+                      selectable
+                      textAlign="center"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => this.removeFile(i)}
+                    >
+                      <Icon name="x"/>
+                    </Table.Cell>
+                  </DraggableTableRow>
+                </Transition>
+              )}
+            </Table.Body>
+          </Table>
+          }
         </Segment>
       </div>
     );

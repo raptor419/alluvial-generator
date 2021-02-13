@@ -60,7 +60,7 @@
     "worker-loader": "^2.0.0"
   },
   "scripts": {
-    "start": "export PORT=4000 && node scripts/start.js",
+    "start": "(set PORT=4000 || export PORT=4000) && node scripts/start.js",
     "build": "node scripts/build.js",
     "flow": "$(npm bin)/flow",
     "test": "node scripts/test.js --env=jsdom",
