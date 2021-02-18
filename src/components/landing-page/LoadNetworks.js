@@ -87,16 +87,16 @@ export default class LoadNetworks extends React.Component {
     const filename = this.input.value;
 
     const http = require('http');
-    window.monthData = '';
+    var monthData = '';
     console.log(filename);
     let req = http.get(`./data/${filename}.ftree`, (res) =>  {
       let data = '';
       res.on('data', (stream) =>  {
         data += stream;
-        window.monthData = data;
-        console.log(window.monthData);
+        monthData = data;
+        console.log(monthData);
         const newFile = {
-          contents: window.monthData,
+          contents: monthData,
           name: filename,
           size: 0,
           format: "ftree",
