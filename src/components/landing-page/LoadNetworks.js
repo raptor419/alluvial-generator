@@ -93,22 +93,24 @@ export default class LoadNetworks extends React.Component {
       let data = '';
       res.on('data', (stream) =>  {
         data += stream;
-        monthData = data;
-        console.log(monthData);
-        const newFile = {
-          contents: monthData,
-          name: filename,
-          size: 0,
-          format: "ftree",
-          multilayer: false,
-          error: false,
-          errorMessage: null
-        };
-        console.log(this);
-        this.setState(({ files }) => ({
-          files: [...files, newFile],
-          loading: false
-        }));
+        if(monthData!==data){
+          monthData = data;
+          console.log(monthData);
+          const newFile = {
+            contents: monthData,
+            name: filename,
+            size: 0,
+            format: "ftree",
+            multilayer: false,
+            error: false,
+            errorMessage: null
+          };
+          console.log(this);
+          this.setState(({ files }) => ({
+            files: [...files, newFile],
+            loading: false
+          }));
+        }
         });
     })
   };
