@@ -89,15 +89,36 @@ export default class LoadNetworks extends React.Component {
     const http = require('http');
     var monthData = '';
     console.log(filename);
-    let req = http.get(`./data/${filename}.ftree`, (res) =>  {
-      let data = '';
-      res.on('data', (stream) =>  {
-        data += stream;
-        if(monthData!==data){
-          monthData = data;
-          console.log(monthData);
-          const newFile = {
-            contents: monthData,
+    // let req = http.get(`./data/${filename}.ftree`, (res) =>  {
+    //   let data = '';
+    //   res.on('data', (stream) =>  {
+    //     data += stream;
+    //     monthData = data;
+    //     });
+    //   console.log(monthData);
+    //   if(monthData!==data){
+    //       console.log(monthData);
+    //       const newFile = {
+    //         contents: monthData,
+    //         name: filename,
+    //         size: 0,
+    //         format: "ftree",
+    //         multilayer: false,
+    //         error: false,
+    //         errorMessage: null
+    //       };
+    //       console.log(this);
+    //       this.setState(({ files }) => ({
+    //         files: [...files, newFile],
+    //         loading: false
+    //       }));
+    //     }
+    // })
+    fetch(`./data/${filename}.ftree`)
+    .then(res => res.text())
+    .then(data => {
+      const newFile = {
+            contents: data,
             name: filename,
             size: 0,
             format: "ftree",
@@ -110,9 +131,8 @@ export default class LoadNetworks extends React.Component {
             files: [...files, newFile],
             loading: false
           }));
-        }
-        });
-    })
+    }
+      );
   };
 
   setIdentifiersInJsonFormat = (json) => {
