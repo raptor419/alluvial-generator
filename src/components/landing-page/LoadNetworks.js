@@ -82,50 +82,35 @@ export default class LoadNetworks extends React.Component {
     this.setState({ loading: true }, () => setTimeout(callback, 50));
 
   loadSelectedFiles = () => {
+
     const validFiles = [];
-    console.log(this.input)
-    const filename = "alluvial.json";
+    const filename = this.input.value;
 
-    // const fs = require('fs');
-    
-    for (let file of this.input.files) {
-      console.log(file)
-      const extension = fileExtension(file.name);
-      if (isValidExtension(extension) || extension === "json") {
-        file.format = extension;
-        validFiles.push(file);
-      } else {
-        alert(`Invalid format for file ${file.name}`);
-        console.error(`Invalid format for file ${file.name}`);
-      }
-    }
-
-    this.input.value = "";
-
-    Promise.all(validFiles.map(readAsText))
-      .then(files => {
-        const newFiles = files.map((file, i) => ({
-          contents: file,
-          name: validFiles[i].name,
-          size: validFiles[i].size,
-          format: validFiles[i].format,
+    const http = require('http');
+    window.monthData = '';
+    console.log(filename);
+    let req = http.get(`./data/${filename}.ftree`, (res) =>  {
+      let data = '';
+      res.on('data', (stream) =>  {
+        data += stream;
+        window.monthData = data;
+        console.log(window.monthData);
+        const newFile = {
+          contents: window.monthData,
+          name: filename,
+          size: 0,
+          format: "ftree",
           multilayer: false,
           error: false,
           errorMessage: null
-        }));
-
+        };
+        console.log(this);
         this.setState(({ files }) => ({
-          files: [...files, ...newFiles],
+          files: [...files, newFile],
           loading: false
         }));
-      })
-      .catch(err => {
-        console.log(err);
-        Sentry.captureException(err);
-      });
-      console.log(validFiles);
-      console.log(this.state);
-      console.log(this.state.files);
+        });
+    })
   };
 
   setIdentifiersInJsonFormat = (json) => {
@@ -288,13 +273,12 @@ export default class LoadNetworks extends React.Component {
           textAlign="center"
           style={{ padding: "50px 50px" }}
         >
-          <Label attached="top right">v {process.env.REACT_APP_VERSION}</Label>
           <Step.Group>
             <Step link onClick={this.withLoadingState(this.loadExample)}>
               <Icon name="book"/>
               <Step.Content>
-                <Step.Title>Load our inference</Step.Title>
-                <Step.Description>Load out example inference network</Step.Description>
+                <Step.Title>Load our example inference</Step.Title>
+                <Step.Description>March 2020 to August 2020</Step.Description>
               </Step.Content>
             </Step>
           </Step.Group>
@@ -311,15 +295,18 @@ export default class LoadNetworks extends React.Component {
             >
               <Step.Content>
                 <Step.Title>Add Month</Step.Title>
-                <Step.Description>Add Month to Network</Step.Description>
-              </Step.Content>
-              <input
-                type="file"
+                <Step.Description>Add Months to Network (Start to end)</Step.Description>
+                <input
+                style={{ display: "visible" }}
+                type="month"
                 multiple
                 id="upload"
+                min="2020-02"
+                max="2020-10"
                 onChange={this.withLoadingState(this.loadSelectedFiles)}
                 ref={input => (this.input = input)}
               />
+              </Step.Content>
             </Step>
             <Step
               link
@@ -337,9 +324,7 @@ export default class LoadNetworks extends React.Component {
           <Table celled unstackable striped size="small">
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Format</Table.HeaderCell>
-                <Table.HeaderCell>Multilayer</Table.HeaderCell>
+                <Table.HeaderCell>Node/Month</Table.HeaderCell>
                 <Table.HeaderCell/>
               </Table.Row>
             </Table.Header>
@@ -363,11 +348,6 @@ export default class LoadNetworks extends React.Component {
                           <Icon name="warning sign" style={{ float: "right", cursor: "pointer" }}/>
                         }/>
                       }
-                    </Table.Cell>
-                    <Table.Cell>{humanFileSize(file.size)}</Table.Cell>
-                    <Table.Cell>{file.format}</Table.Cell>
-                    <Table.Cell>
-                      <Checkbox checked={file.multilayer} onChange={() => this.toggleMultilayer(i)}/>
                     </Table.Cell>
                     <Table.Cell
                       selectable
